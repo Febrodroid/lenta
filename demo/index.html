@@ -4,11 +4,13 @@
   <title>Demo</title>
   <script src="../vendor/require.js"></script>
   <style type="text/css">
-	.item {
+	.slide {
 		margin: 10px;
 		padding: 10px;
+		float: left;
+		
 	}
-	.item img {
+	.slide img {
 		width: 100%;
 		height: 100%;
 		display: block;
@@ -16,36 +18,62 @@
 	
 	#lenta {
 		height: 300px;
+		border: 1px solid #cfcfcf;
+		overflow: hidden;
 	}
+	
+	#lenta .slider {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+		z-index: 1;
+	}
+	
+	#lenta .buttons {
+		position: absolute;
+		z-index: 2;
+	} 
   </style>
 </head>
 <body>
 
-	<div id="lenta" data-lenta-height="300" data-slides="#">
-		<div class="item" data-lenta-width="612" data-lenta-height="612">
-			<img data-src="images/1.jpg" src="data:image/gif," alt=""/>
+	<div id="lenta" data-lenta-height="300">
+		<div class="buttons">
+			<a class="next-btn" href="#next">next</a>
+			<a class="prev-btn" href="#prev">prev</a>
 		</div>
-		<div class="item" data-lenta-width="1024" data-lenta-height="618">
-			<img data-src="images/2.jpg" src="data:image/gif,"  alt=""/>
-		</div>
-		<div class="item" data-lenta-width="424" data-lenta-height="684">
-			<img data-src="images/3.jpg" src="data:image/gif,"  alt=""/>
-		</div>
-		<div class="item" data-lenta-width="940" data-lenta-height="660">
-			<img data-src="images/4.jpg" src="data:image/gif," alt=""/>
-		</div>
-		<div class="item" data-lenta-width="424" data-lenta-height="684">
-			<img data-src="images/5.jpg" src="data:image/gif," alt=""/>
-		</div>
-		<div class="item" data-lenta-width="987" data-lenta-height="684">
-			<img data-src="images/6.jpg" src="data:image/gif,"  alt=""/>
-		</div>
-		<div class="item" data-lenta-width="940" data-lenta-height="668">
-			<img data-src="images/7.jpg" src="data:image/gif,"  alt=""/>
-		</div>
-		<div class="item" data-lenta-width="612" data-lenta-height="612">
-			<img data-src="images/8.jpg" src="data:image/gif," alt=""/>
-		</div>
+		
+		<ul class="slider">
+			<li class="slide" data-lenta-width="612" data-lenta-height="612">
+				<img data-src="images/1.jpg" src="data:image/gif," alt=""/>
+			</li>
+			<li class="slide" data-lenta-width="1024" data-lenta-height="618">
+				<img data-src="images/2.jpg" src="data:image/gif,"  alt=""/>
+			</li>
+			<li class="slide" data-lenta-width="424" data-lenta-height="684">
+				<img data-src="images/3.jpg" src="data:image/gif,"  alt=""/>
+			</li>
+			<li class="slide" data-lenta-width="940" data-lenta-height="660">
+				<img data-src="images/4.jpg" src="data:image/gif," alt=""/>
+			</li>
+			<li class="slide" data-lenta-width="424" data-lenta-height="684">
+				<img data-src="images/5.jpg" src="data:image/gif," alt=""/>
+			</li>
+			<li class="slide" data-lenta-width="987" data-lenta-height="684">
+				<img data-src="images/6.jpg" src="data:image/gif,"  alt=""/>
+			</li>
+			<li class="slide" data-lenta-width="940" data-lenta-height="668">
+				<img data-src="images/7.jpg" src="data:image/gif,"  alt=""/>
+			</li>
+			<li class="slide" data-lenta-width="612" data-lenta-height="612">
+				<img data-src="images/8.jpg" src="data:image/gif," alt=""/>
+			</li>
+		</ul>
+		
 	</div>
 	
 	<script>

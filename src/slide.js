@@ -1,11 +1,12 @@
 define([
 	
     'backbone',
-    'images'
+    'image-loader',
+    'mixins/data-options'
+    
+], function(Backbone, imageLoader, DataOptionsMixin) {
 	
-], function(Backbone, images) {
-	
-	var slide = Backbone.View.extend({
+	var Slide = Backbone.View.extend({
 		
 		options: {
 			width: 0,
@@ -13,10 +14,29 @@ define([
 		},
 		
 		initialize: function() {
+			this.parseOptions();			
+		},
+
+		getOffset: function() {
 			
-			this.options.width = this.$el.data('lentaWidth');
-			this.options.height = this.$el.data('lentaHeight');
-			this.options.aspectRatio = this.options.width/this.options.height;
+			var offset = {
+				x: this.$el.outerWidth(true) - this.$el.width(),
+				y: this.$el.outerHeight(true) - this.$el.height()
+			};
+			
+			return offset;
+		},
+		
+		getAspectRatio: function() {
+			return this.options.width / this.options.height;
+		},
+		
+		getOuterWidth: function() {
+			return this.$el.outerWidth(true);
+		},
+		
+		getPosition: function() {
+			return this.$el.position();
 		},
 		
 		render: function() {
@@ -24,7 +44,7 @@ define([
 			this.$el.css('position', 'absolute');
 			
 			this.$el.find('img').each(function(i, image) {
-				images.load(image);
+				imageLoader.load(image);
 			});
 			
 			return this;
@@ -32,19 +52,29 @@ define([
 		
 		position: function(offset) {
 			
-			this.$el.css('left', offset);
+			this.$el
+				.css({
+					'top': 0,
+					'left': offset
+				});
 			
 			return this;
 		},
 		
 		resize: function(height) {
 			
+			var offset = this.getOffset();
+			
+			height = height - offset.y;
+			
 			this.$el.height(height);
-			this.$el.width(height * this.options.aspectRatio);
+			this.$el.width(height * this.getAspectRatio() - offset.x);
 			
 			return this;
 		},
 	});
 	
-	return slide;
+	_.extend(Slide.prototype, DataOptionsMixin);
+	
+	return Slide;
 });
