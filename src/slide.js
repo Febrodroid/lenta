@@ -35,6 +35,10 @@ define([
 			return this.$el.outerWidth(true);
 		},
 		
+		setActive: function() {
+			this.$el.addClass('active');
+		},
+		
 		getPosition: function() {
 			return this.$el.position();
 		},

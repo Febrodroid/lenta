@@ -10,6 +10,7 @@ define([
 		
 		options: {
 			height: 0,
+			sliderSelector: '> ul',
 			slidesSelector: '> ul > li',
 			prevBtn: '.prev-btn',
 			nextBtn: '.next-btn',
@@ -23,11 +24,25 @@ define([
 			
 			this.parseOptions();
 
-			this.$el.find(this.options.nextBtn)
+			this.$(this.options.nextBtn)
 				.on('click', this.next);
-			
-			this.$el.find(this.options.prevBtn)
+		
+			this.$(this.options.prevBtn)
 				.on('click', this.prev);
+			
+			this.$(this.options.slidesSelector)
+				.on('click', this.toSlide);
+		},
+		
+		toSlide: function(e) {
+			e.preventDefault();
+	
+			var index = this.$el
+				.find(this.options.slidesSelector)
+				.index(e.currentTarget);
+			
+			if(index + 1 <= this.slides.length && index >= 0)
+				this.transition(this.options.index = index);				
 		},
 		
 		prev: function(e) {
@@ -58,18 +73,29 @@ define([
 
 			if(slide) {
 				
+				var changeTo = this.$el.width() / 2 - (slide.getOuterWidth() / 2 + slide.getPosition().left);
+				
+				var min = 0;
+				var max = this.$el.width() - this.slider.width();
+				
 				this.$el.addClass(className);
 				
-				var leftSlider = this.$el.find('ul').position().left;
-				var leftSlide = slide.getPosition().left;
-				var leftOffset = Math.abs(leftSlider) - leftSlide;
-				
-				this.$el.find('ul').animate({
-					'left': (leftOffset > 0? '+=': '-=') + Math.abs(leftOffset)
+				this.slider.animate({
+					'left':  Math.max(Math.min(min, changeTo),  max)
 				}, this.options.transitionSpeed, function() {
 					self.$el.removeClass(className);
+					self.setFocus(slide);					
 				});
 			}
+		},
+		
+		setFocus: function(slide) {
+			
+			this.$el
+				.find(this.options.slidesSelector)
+				.removeClass('focus');
+		
+			slide.$el.addClass('focus');
 		},
 		
 		render: function() {
@@ -82,8 +108,9 @@ define([
 			
 			var offset = 0;
 			
-			this.slides = this.$el
-				.find(this.options.slidesSelector)
+			this.slider = this.$(this.options.sliderSelector);
+			
+			this.slides = this.$(this.options.slidesSelector)
 				.map(function(i, element) {
 					
 					var slide = (new Slide({
@@ -98,9 +125,11 @@ define([
 					return slide;
 				});
 			
-			this.$('ul')
+			this.slider
 				.width(offset)
 				.height(this.options.height);
+			
+			this.transition(this.options.index);
 			
 			return this;
 		}
