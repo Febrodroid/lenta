@@ -38,7 +38,7 @@ define([
 			
 			this.$(this.options.slidesSelector)
 				.on('click', this.toSlide);
-			
+
 			this.on('moved', this.initControls);
 		},
 		
@@ -97,7 +97,7 @@ define([
 			if(slide) {
 				
 				var changeTo = this.$el.width() / 2 - (slide.getOuterWidth() / 2 + slide.getPosition().left);
-				
+
 				var min = 0;
 				var max = this.$el.width() - this.slider.width();
 				
@@ -132,7 +132,7 @@ define([
 			this.$el.height(this.options.height);
 			
 			var offset = 0;
-			
+		
 			this.slides = this.$(this.options.slidesSelector)
 				.map(function(i, element) {
 					
@@ -153,7 +153,7 @@ define([
 				.height(this.options.height);
 			
 			this.move(this.options.index);
-			
+
 			return this;
 		}
 	});
