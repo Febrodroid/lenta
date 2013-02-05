@@ -45,10 +45,16 @@ define([
 		
 		render: function() {
 			
+			var self = this;
+			
 			this.$el.css('position', 'absolute');
 			
 			this.$el.find('img').each(function(i, image) {
-				imageLoader.load(image);
+				self.$el.addClass('loading');
+				
+				imageLoader.load(image).then(function() {
+					self.$el.removeClass('loading');
+				});
 			});
 			
 			return this;

@@ -16,6 +16,14 @@
 		opacity: 1;
 	}
 	
+	.slide.loading {
+		background: #cfcfcf;
+	}
+	
+	.slide.loading img {
+		visibility: hidden;
+	}
+	
 	.slide img {
 		width: 100%;
 		height: 100%;
@@ -54,28 +62,28 @@
 		</div>
 		
 		<ul class="slider">
-			<li class="slide" data-lenta-width="612" data-lenta-height="612">
+			<li class="slide loading" data-lenta-width="612" data-lenta-height="612">
 				<img data-src="images/1.jpg" src="data:image/gif," alt=""/>
 			</li>
-			<li class="slide" data-lenta-width="1024" data-lenta-height="618">
+			<li class="slide loading" data-lenta-width="1024" data-lenta-height="618">
 				<img data-src="images/2.jpg" src="data:image/gif,"  alt=""/>
 			</li>
-			<li class="slide" data-lenta-width="424" data-lenta-height="684">
+			<li class="slide loading" data-lenta-width="424" data-lenta-height="684">
 				<img data-src="images/3.jpg" src="data:image/gif,"  alt=""/>
 			</li>
-			<li class="slide" data-lenta-width="940" data-lenta-height="660">
+			<li class="slide loading" data-lenta-width="940" data-lenta-height="660">
 				<img data-src="images/4.jpg" src="data:image/gif," alt=""/>
 			</li>
-			<li class="slide" data-lenta-width="424" data-lenta-height="684">
+			<li class="slide loading" data-lenta-width="424" data-lenta-height="684">
 				<img data-src="images/5.jpg" src="data:image/gif," alt=""/>
 			</li>
-			<li class="slide" data-lenta-width="987" data-lenta-height="684">
+			<li class="slide loading" data-lenta-width="987" data-lenta-height="684">
 				<img data-src="images/6.jpg" src="data:image/gif,"  alt=""/>
 			</li>
-			<li class="slide" data-lenta-width="940" data-lenta-height="668">
+			<li class="slide loading" data-lenta-width="940" data-lenta-height="668">
 				<img data-src="images/7.jpg" src="data:image/gif,"  alt=""/>
 			</li>
-			<li class="slide" data-lenta-width="612" data-lenta-height="612">
+			<li class="slide loading" data-lenta-width="612" data-lenta-height="612">
 				<img data-src="images/8.jpg" src="data:image/gif," alt=""/>
 			</li>
 		</ul>
@@ -101,10 +109,20 @@
 	
 		require(['lenta'],function(Lenta){
 			
-			(new Lenta({
+			var lenta = new Lenta({
 				el: $("#lenta")
-			}))
-			.render();	
+			});
+			
+			lenta.on('slide-loading', function(slide) {
+				
+			});
+			
+			lenta.on('slide-loaded', function(slide) {
+				
+			});
+			
+			lenta.render();	
+			
 			
 		});	
 	</script>
