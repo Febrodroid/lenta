@@ -2,13 +2,35 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
-  
+	  	clean: ['dist'],
+				
+		requirejs: {
+			
+			build: {
+			
+				options: {
+					
+					paths: {
+						'backbone': '../vendor/backbone-min',
+						'underscore': '../vendor/underscore-min',
+						'jquery': '../vendor/jquery-1.9.0.min'
+					},
+					
+					baseUrl: 'src',
+			    	
+			    	name: 'lenta',
+			    	
+			    	out: 'dist/lenta.js',
+			    	
+			    	exclude: ['backbone', 'underscore', 'jquery']
+				}
+		
+			}
+		}
   });
 
   grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-rigger');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   
-  
-  grunt.registerTask('default', ['requirejs', 'uglify']);
+  grunt.registerTask('default', ['clean', 'requirejs']);
 };
