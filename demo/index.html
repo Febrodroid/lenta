@@ -4,12 +4,15 @@
   <title>Demo</title>
   <script src="../vendor/require.js"></script>
   <style type="text/css">
+	
+	html, body {height: 100%}
+	
 	.slide {
 		margin: 10px;
 		padding: 10px;
 		float: left;
 		opacity: 0.5;
-		
+		display: block;
 	}
 	
 	.slide.focus {
@@ -25,22 +28,22 @@
 	}
 	
 	.slide img {
-		width: 100%;
+		width: auto;
 		height: 100%;
 		display: block;
 	}
 	
 	#lenta {
-		height: 300px;
 		border: 1px solid #cfcfcf;
 		overflow: hidden;
+		margin: 60px;
+		height: 50%;
 	}
 	
 	#lenta .slider {
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 100%;
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
@@ -54,6 +57,7 @@
   </style>
 </head>
 <body>
+	<div style="background: #cfcfcf; height: 100px;">Header</div>
 
 	<div id="lenta" data-lenta-height="300">
 		<div class="buttons">
@@ -65,7 +69,7 @@
 			<li class="slide loading" data-lenta-width="612" data-lenta-height="612">
 				<img data-src="images/1.jpg" src="data:image/gif," alt=""/>
 			</li>
-			<li class="slide loading" data-lenta-width="1024" data-lenta-height="618">
+			<li class="slide loading" data-lenta-width="1024" data-lenta-height="681">
 				<img data-src="images/2.jpg" src="data:image/gif,"  alt=""/>
 			</li>
 			<li class="slide loading" data-lenta-width="424" data-lenta-height="684">
@@ -89,7 +93,7 @@
 		</ul>
 		
 	</div>
-	
+	<div style="background: #cfcfcf; height: 100px;">Footer</div>
 	<script>
 
 		requirejs.config({
@@ -113,17 +117,7 @@
 				el: $("#lenta")
 			});
 			
-			lenta.on('slide-loading', function(slide) {
-				
-			});
-			
-			lenta.on('slide-loaded', function(slide) {
-				
-			});
-			
 			lenta.render();	
-			
-			
 		});	
 	</script>
 </body>

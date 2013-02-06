@@ -34,11 +34,7 @@ define([
 		getOuterWidth: function() {
 			return this.$el.outerWidth(true);
 		},
-		
-		setActive: function() {
-			this.$el.addClass('active');
-		},
-		
+				
 		getPosition: function() {
 			return this.$el.position();
 		},
@@ -46,8 +42,6 @@ define([
 		render: function() {
 			
 			var self = this;
-			
-			this.$el.css('position', 'absolute');
 			
 			this.$el.find('img').each(function(i, image) {
 				self.$el.addClass('loading');
@@ -60,25 +54,16 @@ define([
 			return this;
 		},
 		
-		position: function(offset) {
-			
-			this.$el
-				.css({
-					'top': 0,
-					'left': offset
-				});
-			
-			return this;
-		},
-		
 		resize: function(height) {
 			
 			var offset = this.getOffset();
 			
 			height = height - offset.y;
 			
-			this.$el.height(height);
-			this.$el.width(height * this.getAspectRatio() - offset.x);
+			this.$el.css({
+				'height': height,
+				'width': Math.ceil(height * this.getAspectRatio())
+			});
 			
 			return this;
 		},

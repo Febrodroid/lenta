@@ -8,6 +8,8 @@ define([
 	
 	var Lenta = Backbone.View.extend({
 		
+		timerMoveOnResize: null,
+		
 		options: {
 			height: 0,
 			sliderSelector: '> ul',
@@ -40,6 +42,24 @@ define([
 				.on('click', this.toSlide);
 
 			this.on('moved', this.initControls);
+			
+			$(window).resize(this.onWindowResize);
+		},
+		
+		onWindowResize: function() {
+			
+			var self = this;
+			
+			this.resize();
+			
+			if(this.timerMoveOnResize) {
+				clearTimeout(this.timerMoveOnResize);
+				this.timerMoveOnResize = null;
+			}
+			
+			this.timerMoveOnResize = setTimeout(function() {
+				self.move(self.options.index);
+			}, 300);
 		},
 		
 		initControls: function() {
@@ -104,7 +124,7 @@ define([
 				this.$el.addClass(this.options.onMovingCssClass);
 				
 				this.slider.animate({
-					'left':  Math.max(Math.min(min, changeTo),  max)
+					'left':  Math.max(Math.min(min, changeTo),  max > 0? 0: max)
 				}, this.options.transitionSpeed, function() {
 					
 					self.$el.removeClass(self.options.onMovingCssClass);
@@ -123,37 +143,44 @@ define([
 			slide.$el.addClass(this.options.onFocusCssClass);
 		},
 		
-		render: function() {
+		resize: function() {
 			
 			var self = this;
 			
-			this.$el.css('position', 'relative');
+			var width = 0;
 			
-			this.$el.height(this.options.height);
+			_.invoke(this.slides, function() {
+				
+				this
+					.resize(self.$el.height());
+				
+				width += this.getOuterWidth();
+			});
 			
-			var offset = 0;
+			this.slider.width(width);
+			
+			return this;
+		},
+		
+		render: function() {
+			
+			this.$el.css({
+				'position': 'relative',
+				'max-height': this.options.height
+			});
 		
 			this.slides = this.$(this.options.slidesSelector)
 				.map(function(i, element) {
 					
-					var slide = (new Slide({
+					return (new Slide({
 						el: $(element)
 					}))
-					.render()
-					.resize(self.options.height)
-					.position(offset);
-					
-					offset += slide.$el.width() + slide.getOffset().x;
-					
-					return slide;
+					.render();
+
 				});
 			
-			this.slider
-				.width(offset)
-				.height(this.options.height);
+			this.resize().move(this.options.index);
 			
-			this.move(this.options.index);
-
 			return this;
 		}
 	});
