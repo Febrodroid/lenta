@@ -62,7 +62,7 @@ define([
 			
 			this.$el.css({
 				'height': height,
-				'width': Math.ceil(height * this.getAspectRatio())
+				'width': Math.floor(height * this.getAspectRatio())
 			});
 			
 			return this;
