@@ -57,7 +57,7 @@
   </style>
 </head>
 <body>
-	<div style="background: #cfcfcf; height: 100px;">Header</div>
+	<div style="background: #cfcfcf; height: 100px;"><!--  --></div>
 
 	<div id="lenta" data-lenta-height="300">
 		<div class="buttons">
@@ -105,15 +105,15 @@
 		</ul>
 		
 	</div>
-	<div style="background: #cfcfcf; height: 100px;">Footer</div>
+	<div style="background: #cfcfcf; height: 100px;"><!--  --></div>
 	<script>
 
 		requirejs.config({
 			baseUrl: 'dist',
 			paths: {
-				'backbone': 'vendor/backbone-min',
-				'underscore': 'vendor/underscore-min',
-				'jquery': 'vendor/jquery-1.9.0.min'
+				'backbone': '../vendor/backbone-min',
+				'underscore': '../vendor/underscore-min',
+				'jquery': '../vendor/jquery-1.9.0.min'
 			},
 			shim: {
 				backbone: {
