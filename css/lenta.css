@@ -23,6 +23,7 @@
 	float: left;
 	opacity: 0.5;
 	display: block;
+	cursor: pointer;
 }
 
 .lenta > ul > li.focus {
