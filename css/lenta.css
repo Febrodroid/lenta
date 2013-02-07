@@ -1,0 +1,63 @@
+.lenta {
+	overflow: hidden;
+	height: 100%;
+}
+
+.lenta.loading {
+	visibility: hidden;
+}
+
+.lenta > ul {
+	position: absolute;
+	top: 0;
+	left: 0;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	z-index: 1;
+}
+
+.lenta > ul > li {
+	margin: 10px;
+	padding: 10px;
+	float: left;
+	opacity: 0.5;
+	display: block;
+}
+
+.lenta > ul > li.focus {
+	opacity: 1;
+}
+
+.lenta > ul > li.loading {
+	background: #cfcfcf;
+}
+
+.lenta > ul > li.loading img {
+	visibility: hidden;
+}
+
+.lenta > ul > li img {
+	width: auto;
+	height: 100%;
+	display: block;
+}
+
+.lenta .lenta-btn {
+	position: absolute;
+	display: block;
+	text-transform: uppercase;
+	background: #cfcfcf;
+	top: 50%;
+	z-index: 2;
+	margin: 10px;
+	padding: 10px;
+}
+
+.lenta .lenta-next {
+	right: 0;
+}
+
+.lenta .lenta-prev {
+	left: 0;
+}
