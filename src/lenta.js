@@ -14,8 +14,8 @@ define([
 			height: 0,
 			sliderSelector: '> ul',
 			slidesSelector: '> ul > li',
-			prevBtnSelector: '.prev-btn',
-			nextBtnSelector: '.next-btn',
+			prevBtnSelector: '.lenta-prev',
+			nextBtnSelector: '.lenta-next',
 			transitionSpeed: 'fast',
 			index: 0,
 			onMovingCssClass: 'moving',
@@ -41,7 +41,7 @@ define([
 			this.$(this.options.slidesSelector)
 				.on('click', this.toSlide);
 
-			this.on('moved', this.initControls);
+			this.on('moving', this.initControls);
 			
 			$(window).resize(this.onWindowResize);
 		},
@@ -180,6 +180,8 @@ define([
 				});
 			
 			this.resize().move(this.options.index);
+			
+			this.$el.removeClass('loading');
 			
 			return this;
 		}
