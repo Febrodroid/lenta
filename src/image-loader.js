@@ -19,7 +19,6 @@ define([
 			var src = item.image.data('src');
 			
 			item.image
-				.attr('src', src)
 				.on('load', function() {
 					
 					item.def.resolve(item.image);
@@ -29,7 +28,8 @@ define([
 					
 					item.def.reject(item.image);
 					dequeue();
-				});
+				})
+				.attr('src', src);
 			
 		} else {
 			loading = false;
