@@ -46,7 +46,8 @@ define([
 			this.$el.find('img').each(function(i, image) {
 				self.$el.addClass('loading');
 				
-				imageLoader.load(image).then(function() {
+				imageLoader.load(image).then(function(img) {
+					
 					self.$el.removeClass('loading');
 				});
 			});
