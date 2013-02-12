@@ -1,8 +1,8 @@
 define([
 	
     'backbone',
-    'slide',
-	'mixins/data-options'
+    'lenta/slide',
+	'lenta/mixins/data-options'
 	
 ], function(Backbone, Slide, DataOptionsMixin) {
 	

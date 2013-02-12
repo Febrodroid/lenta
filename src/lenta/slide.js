@@ -1,8 +1,8 @@
 define([
 	
     'backbone',
-    'image-loader',
-    'mixins/data-options'
+    'lenta/image-loader',
+    'lenta/mixins/data-options'
     
 ], function(Backbone, imageLoader, DataOptionsMixin) {
 	
