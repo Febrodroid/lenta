@@ -12,20 +12,21 @@ define([
 		
 		options: {
 			height: 0,
-			sliderSelector: '> ul',
-			slidesSelector: '> ul > li',
+			sliderSelector: '.lenta-viewport > ul',
+			slidesSelector: '.lenta-viewport > ul > li',
 			prevBtnSelector: '.lenta-prev',
 			nextBtnSelector: '.lenta-next',
 			transitionSpeed: 'fast',
 			index: 0,
 			onMovingCssClass: 'moving',
-			onFocusCssClass: 'focus'
+			onFocusCssClass: 'focus',
+			aspectRatio: null
 		},
 		
 		initialize: function() {
 			
 			_.bindAll(this);
-			
+							
 			this.parseOptions();
 			
 			this.slider = this.$(this.options.sliderSelector);
@@ -78,7 +79,6 @@ define([
 		},
 		
 		toSlide: function(e) {
-			e.preventDefault();
 	
 			var index = this.$el
 				.find(this.options.slidesSelector)
@@ -115,14 +115,14 @@ define([
 			var slide = this.slides[index];
 
 			if(slide) {
+
+				this.$el.addClass(this.options.onMovingCssClass);
 				
 				var changeTo = this.$el.width() / 2 - (slide.getOuterWidth() / 2 + slide.getPosition().left);
 
 				var min = 0;
 				var max = this.$el.width() - this.slider.width();
-				
-				this.$el.addClass(this.options.onMovingCssClass);
-				
+								
 				this.slider.animate({
 					'left':  Math.max(Math.min(min, changeTo),  max > 0? 0: max)
 				}, this.options.transitionSpeed, function() {
@@ -152,12 +152,25 @@ define([
 			_.invoke(this.slides, function() {
 				
 				this
-					.resize(self.$el.height());
+					.resize(self.$el.height(), self.$el.width());
 				
 				width += this.getOuterWidth();
 			});
 			
 			this.slider.width(width);
+			
+			if(this.options.aspectRatio) {
+				
+				var parent = this.$el.parent();
+				
+				var rate = Math.min(parent.width() / this.$el.width(), parent.height() /  this.$el.height());
+				
+				var height = this.$el.height() * rate;
+				
+				this.$el
+					.width(height * this.options.aspectRatio)
+					.height(height);
+			}
 			
 			return this;
 		},

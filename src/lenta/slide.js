@@ -1,10 +1,9 @@
 define([
 	
     'backbone',
-    'lenta/image-loader',
     'lenta/mixins/data-options'
     
-], function(Backbone, imageLoader, DataOptionsMixin) {
+], function(Backbone, DataOptionsMixin) {
 	
 	var Slide = Backbone.View.extend({
 		
@@ -38,23 +37,7 @@ define([
 		getPosition: function() {
 			return this.$el.position();
 		},
-		
-		render: function() {
-			
-			var self = this;
-			
-			this.$el.find('img').each(function(i, image) {
-				self.$el.addClass('loading');
 				
-				imageLoader.load(image).then(function(img) {
-					
-					self.$el.removeClass('loading');
-				});
-			});
-			
-			return this;
-		},
-		
 		resize: function(height) {
 			
 			var offset = this.getOffset();
