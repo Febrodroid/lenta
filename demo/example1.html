@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+  <title>Demo</title>
+  <script src="../vendor/require.js"></script>
+  <style type="text/css">
+	
+	html, body {height: 100%}
+	body {margin: 0; padding: 0;}
+		
+  </style>
+  <link rel="stylesheet" type="text/css" href="../css/lenta.css" />
+</head>
+<body>
+
+	<div class="lenta loading" data-lenta-height="600">
+		
+		<a class="lenta-next lenta-btn" href="#next">next</a>
+		<a class="lenta-prev lenta-btn" href="#prev">prev</a>
+		
+		<div class="lenta-viewport">
+			<ul>
+				<li class="loading" data-lenta-width="612" data-lenta-height="612">
+					<img data-src="images/1.jpg" src="data:image/gif," alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="1024" data-lenta-height="681">
+					<img data-src="images/2.jpg" src="data:image/gif,"  alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="424" data-lenta-height="684">
+					<img data-src="images/3.jpg" src="data:image/gif,"  alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="940" data-lenta-height="660">
+					<img data-src="images/4.jpg" src="data:image/gif," alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="424" data-lenta-height="684">
+					<img data-src="images/5.jpg" src="data:image/gif," alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="987" data-lenta-height="684">
+					<img data-src="images/6.jpg" src="data:image/gif,"  alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="940" data-lenta-height="668">
+					<img data-src="images/7.jpg" src="data:image/gif,"  alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="612" data-lenta-height="612">
+					<img data-src="images/8.jpg" src="data:image/gif," alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="940" data-lenta-height="656">
+					<img data-src="images/9.jpg" src="data:image/gif," alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="1024" data-lenta-height="666">
+					<img data-src="images/10.jpg" src="data:image/gif," alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="457" data-lenta-height="684">
+					<img data-src="images/11.jpg" src="data:image/gif," alt=""/>
+				</li>
+				<li class="loading" data-lenta-width="710" data-lenta-height="300">
+					<img data-src="images/12.jpg" src="data:image/gif," alt=""/>
+				</li>
+			</ul>
+		</div>
+		
+	</div>
+	
+	<script>
+
+		requirejs.config({
+			baseUrl: '../' + (document.location.hash == '#dist'? 'dist': 'src'),
+			paths: {
+				'backbone': '../vendor/backbone-min',
+				'underscore': '../vendor/underscore-min',
+				'jquery': '../vendor/jquery-1.9.0.min'
+			},
+			shim: {
+				backbone: {
+					deps: ['jquery', 'underscore'],
+			    	exports: 'Backbone'
+				}
+			}
+		});
+	
+		require(['lenta'],function(Lenta){
+			
+			var lenta = new Lenta({
+				el: $('.lenta')
+			});
+			
+			lenta.render();	
+		});	
+	</script>
+</body>
+</html>

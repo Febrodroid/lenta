@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+<head>
+  <title>Demo</title>
+  <script src="../vendor/require.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/lenta.css" />
+  <style type="text/css">
+	
+	html, body {height: 100%}
+	body {margin: 0; padding: 0;}
+		
+  </style>
+  
+</head>
+<body>
+
+	<div class="lenta loading" 
+		data-lenta-height="600" 
+		data-lenta-aspect-ratio="1" style="border: 1px solid red; margin-left: auto; margin-right: auto;">
+		
+		<a class="lenta-next lenta-btn" href="#next">next</a>
+		<a class="lenta-prev lenta-btn" href="#prev">prev</a>
+		
+		<div class="lenta-viewport">
+		
+			<ul>
+				<li class="loading" 
+					data-lenta-width="600" 
+					data-lenta-height="600" 
+					style="background: #cfcfcf">
+					
+					<div class="grid" data-grid-aspect-ratio="1">
+					
+						<div class="grid-layout" 
+							data-grid-columns-count="2"
+							data-grid-column-max-width="100"
+							data-grid-align="center"
+							data-grid-vertical-align="center">
+						</div>	
+						
+						<div class="grid-item loading" 
+							data-grid-width="612" 
+							data-grid-height="612">
+							<a href="http://google.com">
+								<img data-src="images/1.jpg" src="data:image/gif,"/>
+							</a>
+						</div>
+						
+						<div class="grid-item loading" 
+							data-grid-width="612" 
+							data-grid-height="612">
+							<a href="http://ya.ru">
+								<img data-src="images/1.jpg" src="data:image/gif,"/>
+							</a>
+						</div>
+						
+						<div class="grid-item loading" 
+							data-grid-width="612" 
+							data-grid-height="612">
+							<img data-src="images/1.jpg" src="data:image/gif,"/>
+						</div>
+						
+						<div class="grid-item loading" 
+							data-grid-width="612" 
+							data-grid-height="612">
+							<img data-src="images/1.jpg" src="data:image/gif,"/>
+						</div>
+					</div>
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				
+					<div class="grid" data-grid-aspect-ratio="1">
+					
+						<div class="grid-layout" 
+							data-grid-columns-count="2"
+							data-grid-column-max-width="100"
+							data-grid-align="center"
+							data-grid-vertical-align="center">
+						</div>	
+						
+						<div class="grid-item loading" 
+							data-grid-width="612" 
+							data-grid-height="612">
+							<img data-src="images/24.jpg" src="data:image/gif,"/>
+						</div>
+						
+						<div class="grid-item loading" 
+							data-grid-width="612" 
+							data-grid-height="612">
+							<img data-src="images/24.jpg" src="data:image/gif,"/>
+						</div>
+						
+						<div class="grid-item loading" 
+							data-grid-width="612" 
+							data-grid-height="612">
+							<img data-src="images/24.jpg" src="data:image/gif,"/>
+						</div>
+						
+						<div class="grid-item loading" 
+							data-grid-width="612" 
+							data-grid-height="612">
+							<img data-src="images/24.jpg" src="data:image/gif,"/>
+						</div>
+					</div>
+				
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				</li>
+				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				
+				</li>
+			</ul>
+		</div>
+		
+	</div>
+	
+	<script>
+
+		requirejs.config({
+			baseUrl: '../' + (document.location.hash == '#dist'? 'dist': 'src'),
+			paths: {
+				'backbone': '../vendor/backbone-min',
+				'underscore': '../vendor/underscore-min',
+				'jquery': '../vendor/jquery-1.9.0.min',
+				'grid': '../vendor/grid'
+			},
+			shim: {
+				backbone: {
+					deps: ['jquery', 'underscore'],
+			    	exports: 'Backbone'
+				}
+			}
+		});
+	
+		require(['lenta', 'grid'],function(Lenta, Grid){
+			
+			var lenta = new Lenta({
+				el: $('.lenta')
+			});
+			
+			lenta.render();	
+			
+			$('.grid').each(function() {
+				
+				var grid = new Grid({
+					el: $(this)
+				})
+				
+				grid.render();
+			});
+			
+		});	
+	</script>
+</body>
+</html>
