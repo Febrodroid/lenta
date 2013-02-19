@@ -8,14 +8,22 @@
 	
 	html, body {height: 100%}
 	body {margin: 0; padding: 0;}
-		
+	
+	.grid {
+		height: 100%;
+		width: 100%;
+	}
+	.grid .grid-item {margin: 10px;}
+	.grid.first .grid-item {background: red;}
+	.grid.second .grid-item {background: green;}
+	
   </style>
   
 </head>
 <body>
 
 	<div class="lenta loading" 
-		data-lenta-height="600" 
+		data-lenta-height="400" 
 		data-lenta-aspect-ratio="1" style="border: 1px solid red; margin-left: auto; margin-right: auto;">
 		
 		<a class="lenta-next lenta-btn" href="#next">next</a>
@@ -24,104 +32,53 @@
 		<div class="lenta-viewport">
 		
 			<ul>
-				<li data-lenta-width="600" 
-					data-lenta-height="600" 
-					style="background: #cfcfcf">
+				<li data-lenta-aspect-ratio="1" style="background: #cfcfcf">
 					
-					<div class="grid" data-grid-aspect-ratio="1">
+					<div class="grid first" data-grid-aspect-ratio="1">
 					
 						<div class="grid-layout" 
 							data-grid-columns-count="2"
-							data-grid-column-max-width="100"
+							data-grid-column-max-width="400"
 							data-grid-align="center"
 							data-grid-vertical-align="center">
 						</div>	
 						
-						<div class="grid-item loading" 
-							data-grid-width="612" 
-							data-grid-height="612">
-							<a href="http://google.com">
-								<img data-src="images/1.jpg" src="data:image/gif,"/>
-							</a>
+						<div class="grid-item loading" data-grid-aspect-ratio="1">
 						</div>
 						
-						<div class="grid-item loading" 
-							data-grid-width="612" 
-							data-grid-height="612">
-							<a href="http://ya.ru">
-								<img data-src="images/1.jpg" src="data:image/gif,"/>
-							</a>
+						<div class="grid-item loading" data-grid-aspect-ratio="1">
 						</div>
 						
-						<div class="grid-item loading" 
-							data-grid-width="612" 
-							data-grid-height="612">
-							<img data-src="images/1.jpg" src="data:image/gif,"/>
+						<div class="grid-item loading" data-grid-aspect-ratio="1">
 						</div>
 						
-						<div class="grid-item loading" 
-							data-grid-width="612" 
-							data-grid-height="612">
-							<img data-src="images/1.jpg" src="data:image/gif,"/>
+						<div class="grid-item loading" data-grid-aspect-ratio="1">
 						</div>
 					</div>
 				</li>
-				<li data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
+				<li data-lenta-aspect-ratio="1" style="background: #cfcfcf">
 				
-					<div class="grid" data-grid-aspect-ratio="1">
+					<div class="grid second" data-grid-aspect-ratio="1">
 					
 						<div class="grid-layout" 
 							data-grid-columns-count="2"
-							data-grid-column-max-width="100"
+							data-grid-column-max-width="400"
 							data-grid-align="center"
 							data-grid-vertical-align="center">
 						</div>	
 						
-						<div class="grid-item loading" 
-							data-grid-width="612" 
-							data-grid-height="612">
-							<img data-src="images/24.jpg" src="data:image/gif,"/>
+						<div class="grid-item loading" data-grid-aspect-ratio="1">
 						</div>
 						
-						<div class="grid-item loading" 
-							data-grid-width="612" 
-							data-grid-height="612">
-							<img data-src="images/24.jpg" src="data:image/gif,"/>
+						<div class="grid-item loading" data-grid-aspect-ratio="1">
 						</div>
 						
-						<div class="grid-item loading" 
-							data-grid-width="612" 
-							data-grid-height="612">
-							<img data-src="images/24.jpg" src="data:image/gif,"/>
+						<div class="grid-item loading" data-grid-aspect-ratio="1">
 						</div>
 						
-						<div class="grid-item loading" 
-							data-grid-width="612" 
-							data-grid-height="612">
-							<img data-src="images/24.jpg" src="data:image/gif,"/>
+						<div class="grid-item loading" data-grid-aspect-ratio="1">
 						</div>
 					</div>
-				
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
-				</li>
-				<li class="loading" data-lenta-width="600" data-lenta-height="600" style="background: #cfcfcf">
 				
 				</li>
 			</ul>
@@ -152,7 +109,7 @@
 			}
 		});
 	
-		require(['lenta', 'grid', 'loading-queue'],function(Lenta, Grid){
+		require(['lenta', 'grid'],function(Lenta, Grid){
 			
 			var lenta = new Lenta({
 				el: $('.lenta')
@@ -167,12 +124,6 @@
 				})
 				
 				grid.render();
-			});
-			
-			$('img').each(function() {
-				$(this).loadingQueue().then(function(img) {
-					$(img).parent('.grid-item').removeClass('loading');
-				});				
 			});
 		});	
 	</script>

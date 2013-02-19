@@ -147,6 +147,22 @@ define([
 			
 			var self = this;
 			
+			if(this.options.aspectRatio) {
+				
+				var parent = this.$el.parent();
+				
+				var rate = Math.min(parent.width() / this.$el.width(), parent.height() /  this.$el.height());
+				
+				var height = this.$el.height() * rate;
+				
+				if(height > this.options.height)
+					height = this.options.height;
+				
+				this.$el
+					.width(height * this.options.aspectRatio)
+					.height(height);
+			}
+			
 			var width = 0;
 			
 			_.invoke(this.slides, function() {
@@ -158,19 +174,6 @@ define([
 			});
 			
 			this.slider.width(width);
-			
-			if(this.options.aspectRatio) {
-				
-				var parent = this.$el.parent();
-				
-				var rate = Math.min(parent.width() / this.$el.width(), parent.height() /  this.$el.height());
-				
-				var height = this.$el.height() * rate;
-				
-				this.$el
-					.width(height * this.options.aspectRatio)
-					.height(height);
-			}
 			
 			return this;
 		},

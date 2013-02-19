@@ -27,7 +27,14 @@ define([
 		},
 		
 		getAspectRatio: function() {
-			return this.options.width / this.options.height;
+			
+			var aspectRatio = this.options.aspectRatio;
+			
+			if(!aspectRatio) {
+				aspectRatio = this.options.width / this.options.height;
+			}
+			
+			return aspectRatio;
 		},
 		
 		getOuterWidth: function() {
