@@ -13,7 +13,8 @@
 </head>
 <body>
 
-	<div class="lenta loading" data-lenta-height="600">
+	<div class="lenta loading" 
+		data-lenta-height="600">
 		
 		<a class="lenta-next lenta-btn" href="#next">next</a>
 		<a class="lenta-prev lenta-btn" href="#prev">prev</a>
@@ -84,7 +85,7 @@
 		});
 	
 		require(['lenta', 'loading-queue'],function(Lenta){
-			
+		
 			var lenta = new Lenta({
 				el: $('.lenta')
 			});

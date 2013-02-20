@@ -79,13 +79,19 @@ define([
 		},
 		
 		toSlide: function(e) {
-	
-			var index = this.$el
-				.find(this.options.slidesSelector)
-				.index(e.currentTarget);
 			
-			if(index + 1 <= this.slides.length && index >= 0)
-				this.move(this.options.index = index);				
+			var isFocused = $(e.currentTarget)
+				.hasClass(this.options.onFocusCssClass);
+			
+			if(!isFocused) {
+				
+				var index = this.$el
+					.find(this.options.slidesSelector)
+					.index(e.currentTarget);
+				
+				if(index + 1 <= this.slides.length && index >= 0)
+					this.move(this.options.index = index);		
+			}		
 		},
 		
 		prev: function(e) {
@@ -96,7 +102,6 @@ define([
 		},
 		
 		next: function(e) {
-
 			e.preventDefault();
 			
 			if(this.options.index + 1 < this.slides.length)
