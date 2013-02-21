@@ -9,7 +9,8 @@ define([
 		
 		options: {
 			width: 0,
-			height: 0
+			height: 0,
+			maxWidth: null
 		},
 		
 		initialize: function() {
@@ -51,9 +52,15 @@ define([
 			
 			height = height - offset.y;
 			
+			var width = Math.floor(height * this.getAspectRatio());
+			
+			if(this.options.maxWidth && this.options.maxWidth < width) {
+				var width = this.options.maxWidth;
+			}
+			
 			this.$el.css({
 				'height': height,
-				'width': Math.floor(height * this.getAspectRatio())
+				'width': width
 			});
 			
 			return this;
