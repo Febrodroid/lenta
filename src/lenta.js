@@ -2,9 +2,11 @@ define([
 	
     'backbone',
     'lenta/slide',
-	'lenta/mixins/data-options'
-	
-], function(Backbone, Slide, DataOptionsMixin) {
+    'lenta/scrollbar',
+	'lenta/mixins/data-options',
+	'draggable'
+
+], function(Backbone, Slide, Scrollbar, DataOptionsMixin) {
 	
 	var Lenta = Backbone.View.extend({
 		
@@ -12,6 +14,8 @@ define([
 		
 		options: {
 			height: 0,
+			scrollbarSelector: '.lenta-scrollbar',
+			viewportSelector: '.lenta-viewport',
 			sliderSelector: '.lenta-viewport > ul',
 			slidesSelector: '.lenta-viewport > ul > li',
 			prevBtnSelector: '.lenta-prev',
@@ -20,7 +24,9 @@ define([
 			index: 0,
 			onMovingCssClass: 'moving',
 			onFocusCssClass: 'focus',
-			aspectRatio: null
+			aspectRatio: null,
+			align: 'left',
+			verticalAlign: 'top'
 		},
 		
 		initialize: function() {
@@ -29,9 +35,11 @@ define([
 							
 			this.parseOptions();
 			
+			this.scrollbar = null;
 			this.slider = this.$(this.options.sliderSelector);
 			this.prevBtn = this.$(this.options.prevBtnSelector);
 			this.nextBtn = this.$(this.options.nextBtnSelector);
+			this.viewport = this.$(this.options.viewportSelector);
 			
 			this.nextBtn
 				.on('click', this.next);
@@ -40,11 +48,19 @@ define([
 				.on('click', this.prev);
 			
 			this.$(this.options.slidesSelector)
-				.on('click', this.toSlide);
+				.on('click', this.onSlideClick);
 
 			this.on('moving', this.initControls);
 			
 			$(window).resize(this.onWindowResize);
+
+			if(this.$(this.options.scrollbarSelector).length) {
+
+				this.scrollbar = new Scrollbar({
+					el: this.$(this.options.scrollbarSelector),
+					lenta: this
+				});
+			}
 		},
 		
 		onWindowResize: function() {
@@ -78,16 +94,21 @@ define([
 			}			
 		},
 		
-		toSlide: function(e) {
+		onSlideClick: function(e) {
+			var slide = $(e.currentTarget);
+			this.toSlide(slide);
+		},
+
+		toSlide: function(slideNode) {
 			
-			var isFocused = $(e.currentTarget)
+			var isFocused = slideNode
 				.hasClass(this.options.onFocusCssClass);
-			
+		
 			if(!isFocused) {
-				
+		
 				var index = this.$el
 					.find(this.options.slidesSelector)
-					.index(e.currentTarget);
+					.index(slideNode);
 				
 				if(index + 1 <= this.slides.length && index >= 0)
 					this.move(this.options.index = index);		
@@ -180,11 +201,44 @@ define([
 			
 			this.slider.width(width);
 			
+			this.align();
+			
+			this.trigger('resized');
+
 			return this;
 		},
 		
-		render: function() {
+		align: function() {
 			
+			if(this.options.align == 'center') {
+				
+				var left = this.$el.parent().width() / 2 - this.$el.width() / 2;
+			
+				this.$el.css('left', left);
+				
+			} else if(this.options.align == 'right') {
+				
+				var left = this.$el.parent().width() - this.$el.width();
+				
+				this.$el.css('left', left);				
+			}
+			
+			if(this.options.verticalAlign == 'center') {
+				
+				var top = this.$el.parent().height() / 2 - this.$el.height() / 2;
+				
+				this.$el.css('top', top);
+				
+			} else if(this.options.verticalAlign == 'bottom') {
+				
+				var top = this.$el.parent().height() - this.$el.height();
+				
+				this.$el.css('top', top);				
+			}
+		},
+		
+		render: function() {
+
 			this.$el.css({
 				'position': 'relative',
 				'max-height': this.options.height
@@ -203,7 +257,7 @@ define([
 			this.resize().move(this.options.index);
 			
 			this.$el.removeClass('loading');
-			
+
 			return this;
 		}
 	});

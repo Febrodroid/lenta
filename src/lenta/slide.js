@@ -17,6 +17,10 @@ define([
 			this.parseOptions();			
 		},
 
+		isNearTo: function() {
+			return false;
+		},
+
 		getOffset: function() {
 			
 			var offset = {
@@ -55,7 +59,7 @@ define([
 			var width = Math.floor(height * this.getAspectRatio());
 			
 			if(this.options.maxWidth && this.options.maxWidth < width) {
-				var width = this.options.maxWidth;
+				width = this.options.maxWidth;
 			}
 			
 			this.$el.css({

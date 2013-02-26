@@ -13,7 +13,9 @@ module.exports = function(grunt) {
 					paths: {
 						'backbone': '../vendor/backbone-min',
 						'underscore': '../vendor/underscore-min',
-						'jquery': '../vendor/jquery-1.9.0.min'
+						'jquery': '../vendor/jquery-1.9.0.min',
+						'draggable': '../vendor/jquery-ui-1.10.1.draggable'
+						
 					},
 					
 					baseUrl: 'src',
@@ -22,7 +24,7 @@ module.exports = function(grunt) {
 			    	
 			    	out: 'dist/lenta.js',
 			    	
-			    	exclude: ['backbone', 'underscore', 'jquery']
+			    	exclude: ['backbone', 'underscore', 'jquery', 'draggable']
 				}
 		
 			}
