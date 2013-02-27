@@ -16,7 +16,8 @@ define([
 		handler: null,
 
 		options: {
-			handlerSelector: '.lenta-scrollbar-handler'
+			handlerSelector: '.lenta-scrollbar-handler',
+			trackSelector: '.lenta-scrollbar-track'		
 		},
 
 		initialize: function() {
@@ -28,17 +29,23 @@ define([
 			this.viewport = this.lenta.viewport;		
 
 			this.handler = this.$(this.options.handlerSelector);
+			this.track = this.$(this.options.trackSelector);
 
-			this.options.lenta
+			this.lenta
 				.on('moved', this.changePosition)
 				.on('resized', this.render);
 
 			this.handler.draggable({
 			    axis: 'x',
 			    containment: 'parent',
+			    start: this.activateAllSlides,
 			    drag: this.changeContainerPosition,
 			    stop: this.toCenterSlide
 			});
+		},
+
+		activateAllSlides: function() {
+			this.lenta.activateAllSlides();
 		},
 
 		findCenterSlide: function() {
@@ -87,14 +94,14 @@ define([
 		toCenterSlide: function() {
 
 			var slide = this.findCenterSlide();
-
-			this.options.lenta.toSlide(slide.$el);
+					
+			this.lenta.toSlide(slide.$el);
 		},
 
 		render: function() {
 
 			var handlerWidth = 
-				this.viewport.width() / this.slider.width() * this.$el.width();
+				this.viewport.width() / this.slider.width() * this.track.width();
 
 			this.handler.width(handlerWidth);
 

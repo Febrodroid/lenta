@@ -9,26 +9,27 @@
 	html, body {height: 100%}
 	body {margin: 0; padding: 0;}
 
+	.lenta-scrollbar-handler {
+		height: 9px;
+		width: 10px;
+		position: absolute;
+		bottom: 0px;
+		background: #666;
+	}
 
-.lenta-scrollbar-handler {
-	height: 10px;
-	width: 10px;
-	position: absolute;
-	bottom: 0px;
-	background: #666;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-}
+	.lenta-scrollbar {
+		height: 9px;
+		width: 100%;
+		position: absolute;
+		bottom: 0px;
+		z-index: 9999;
+	}
 
-.lenta-scrollbar {
-	height: 10px;
-	width: 100%;
-	position: absolute;
-	bottom: 0px;
-	background: #ddd;
-	z-index: 9999;
-}
-
+	.lenta-scrollbar-track {
+		background: #ddd;
+		height: 1px;
+		margin: 4px 10px;
+	}
   </style>
   
 </head>
@@ -79,7 +80,11 @@
 					<img data-src="images/12.jpg" src="data:image/gif," alt=""/>
 				</li>
 			</ul>
-			<div class="lenta-scrollbar"><div class="lenta-scrollbar-handler"></div></div>
+			<div class="lenta-scrollbar">
+				<div class="lenta-scrollbar-track">
+					<div class="lenta-scrollbar-handler"></div>
+				</div>
+			</div>
 		</div>
 		
 	</div>

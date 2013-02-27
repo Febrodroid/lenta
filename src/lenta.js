@@ -95,24 +95,25 @@ define([
 		},
 		
 		onSlideClick: function(e) {
-			var slide = $(e.currentTarget);
-			this.toSlide(slide);
-		},
+		
+			var slideNode = $(e.currentTarget);
 
-		toSlide: function(slideNode) {
-			
 			var isFocused = slideNode
 				.hasClass(this.options.onFocusCssClass);
 		
 			if(!isFocused) {
-		
-				var index = this.$el
-					.find(this.options.slidesSelector)
-					.index(slideNode);
-				
-				if(index + 1 <= this.slides.length && index >= 0)
-					this.move(this.options.index = index);		
-			}		
+				this.toSlide(slideNode);
+			}
+		},
+
+		toSlide: function(slideNode) {
+
+			var index = this.$el
+				.find(this.options.slidesSelector)
+				.index(slideNode);
+			
+			if(index + 1 <= this.slides.length && index >= 0)
+				this.move(this.options.index = index);		
 		},
 		
 		prev: function(e) {
@@ -159,13 +160,26 @@ define([
 				});
 			}
 		},
-		
-		setFocus: function(slide) {
+
+		activateAllSlides: function() {
+
+			this.$el
+				.find(this.options.slidesSelector)
+				.addClass(this.options.onFocusCssClass);
+		},
+
+		deactivateAllSlides: function() {
 			
 			this.$el
 				.find(this.options.slidesSelector)
 				.removeClass(this.options.onFocusCssClass);
 		
+		},
+		
+		setFocus: function(slide) {
+			
+			this.deactivateAllSlides();
+
 			slide.$el.addClass(this.options.onFocusCssClass);
 		},
 		
