@@ -151,7 +151,8 @@ define([
 
 				this.trigger('moving', {
 					point: point,
-					slide: slide
+					from: this.findActiveSlide(),
+					to: slide
 				});
 							
 				this.slider.animate({
@@ -163,6 +164,15 @@ define([
 					self.trigger('moved');
 				});
 			}
+		},
+
+		findActiveSlide: function() {
+			
+			var self = this;
+
+			return _.find(this.slides, function(slide) {
+				return slide.$el.hasClass(self.options.onFocusCssClass);
+			});
 		},
 
 		activateAllSlides: function() {
