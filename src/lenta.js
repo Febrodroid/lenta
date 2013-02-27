@@ -137,8 +137,6 @@ define([
 			if(this.$el.hasClass(this.options.onMovingCssClass))
 				return false;
 			
-			this.trigger('moving');
-			
 			var slide = this.slides[index];
 
 			if(slide) {
@@ -149,9 +147,15 @@ define([
 
 				var min = 0;
 				var max = this.$el.width() - this.slider.width();
-								
+				var point = Math.max(Math.min(min, changeTo),  max > 0? 0: max);
+
+				this.trigger('moving', {
+					point: point,
+					slide: slide
+				});
+							
 				this.slider.animate({
-					'left':  Math.max(Math.min(min, changeTo),  max > 0? 0: max)
+					'left': point
 				}, this.options.transitionSpeed, function() {
 					
 					self.$el.removeClass(self.options.onMovingCssClass);

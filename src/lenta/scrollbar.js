@@ -32,7 +32,7 @@ define([
 			this.track = this.$(this.options.trackSelector);
 
 			this.lenta
-				.on('moved', this.changePosition)
+				.on('moving', this.changePosition)
 				.on('resized', this.render);
 
 			this.handler.draggable({
@@ -71,14 +71,14 @@ define([
 			return center.slide;
 		},
 
-		changePosition: function() {
+		changePosition: function(e) {
 
-			var sliderScroll = parseInt(this.slider.css('left'));
-			 
 			var left = 
-				sliderScroll / this.viewport.width() * this.handler.width();
+				e.point / this.viewport.width() * this.handler.width();
 			    
-			this.handler.css('left', -1 * left);
+			this.handler.animate({
+				'left': -1 * left
+			}, this.lenta.options.transitionSpeed);
 		},
 
 		changeContainerPosition: function() {
