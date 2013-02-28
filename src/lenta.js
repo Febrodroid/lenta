@@ -79,15 +79,15 @@ define([
 			}, 300);
 		},
 		
-		initControls: function() {
+		initControls: function(e) {
 
-			if(this.options.index + 1 >= this.slides.length) {
+			if(e.toIndex + 1 >= this.slides.length) {
 				this.nextBtn.hide();
 			} else {
 				this.nextBtn.show();
 			}
 			
-			if(this.options.index - 1 < 0) {
+			if(e.toIndex - 1 < 0) {
 				this.prevBtn.hide();
 			} else {
 				this.prevBtn.show();
@@ -117,17 +117,19 @@ define([
 		},
 		
 		prev: function(e) {
-			e.preventDefault();
+			if(e)
+				e.preventDefault();
 			
 			if(this.options.index - 1 >= 0)
-				this.move(--this.options.index);			
+				this.move(this.options.index - 1);			
 		},
 		
 		next: function(e) {
-			e.preventDefault();
-			
+			if(e)
+				e.preventDefault();
+
 			if(this.options.index + 1 < this.slides.length)
-				this.move(++this.options.index);
+				this.move(this.options.index + 1);
 		},
 			
 		move: function(index) {
@@ -152,13 +154,14 @@ define([
 				this.trigger('moving', {
 					point: point,
 					from: this.findActiveSlide(),
-					to: slide
+					to: slide,
+					toIndex: index
 				});
 							
 				this.slider.animate({
 					'left': point
 				}, this.options.transitionSpeed, function() {
-					
+					self.options.index = index;
 					self.$el.removeClass(self.options.onMovingCssClass);
 					self.setFocus(slide);	
 					self.trigger('moved');

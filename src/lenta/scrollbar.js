@@ -1,7 +1,8 @@
 define([
 	
     'backbone',
-    'lenta/mixins/data-options'
+    'lenta/mixins/data-options',
+    'mousewheel'
     
 ], function(Backbone, DataOptionsMixin) {
 	
@@ -42,6 +43,9 @@ define([
 			    drag: this.changeContainerPosition,
 			    stop: this.toCenterSlide
 			});
+
+			this.lenta.$el.mousewheel(this.onMousewheel);
+
 		},
 
 		activateAllSlides: function() {
@@ -60,15 +64,27 @@ define([
 
 			_.each(this.lenta.slides, function(slide) {
 
-				var offset = Math.abs(centerPoint - slide.getPosition().left);
+				var slideCenter = slide.getPosition().left + slide.getOuterWidth() / 2;
 
+				var offset = Math.abs(centerPoint - slideCenter);
+				
 				if(offset < center.offset || center.offset == null) {
+			
 					center.offset = offset;
 					center.slide = slide;
 				}					
 			});
 
 			return center.slide;
+		},
+
+		onMousewheel: function(event, delta, deltaX, deltaY) {
+
+			if(deltaY > 0) {
+				this.lenta.next();
+			} else {
+				this.lenta.prev();
+			}
 		},
 
 		changePosition: function(e) {
@@ -92,10 +108,19 @@ define([
 		},
 
 		toCenterSlide: function() {
+			
+			var left = parseInt(this.handler.css('left'));
 
-			var slide = this.findCenterSlide();
+			var slide = null;
+
+			if(left == 0) {
+				slide = this.lenta.slides.first();
+			} else {
+				slide = this.findCenterSlide();
+			}			
 					
-			this.lenta.toSlide(slide.$el);
+			if(slide)
+				this.lenta.toSlide(slide.$el);
 		},
 
 		render: function() {

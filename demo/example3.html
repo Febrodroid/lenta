@@ -99,9 +99,14 @@
 				'underscore': '../vendor/underscore-min',
 				'jquery': '../vendor/jquery-1.9.0.min',
 				'loading-queue': '../vendor/jquery.loading-queue.min',
-				'draggable': '../vendor/jquery-ui-1.10.1.draggable'					
+				'draggable': '../vendor/jquery-ui-1.10.1.draggable',
+				'mousewheel': '../vendor/jquery.mousewheel'										
 			},
 			shim: {
+				'mousewheel': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
 				'draggable': {
 					deps: ['jquery'],
 			    	exports: '$'
