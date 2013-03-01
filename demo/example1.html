@@ -87,10 +87,20 @@
 				'backbone': '../vendor/backbone-min',
 				'underscore': '../vendor/underscore-min',
 				'jquery': '../vendor/jquery-1.9.0.min',
-				'loading-queue': '../vendor/jquery.loading-queue.min'
+				'jqueryui': '../vendor/jquery-ui-1.10.1.draggable',
+				'loading-queue': '../vendor/jquery.loading-queue.min',
+				'mousewheel': '../vendor/jquery.mousewheel'
 			},
 			shim: {
 				'loading-queue': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
+				'jqueryui': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
+				'mousewheel': {
 					deps: ['jquery'],
 			    	exports: '$'
 				},

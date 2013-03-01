@@ -96,10 +96,21 @@
 				'underscore': '../vendor/underscore-min',
 				'jquery': '../vendor/jquery-1.9.0.min',
 				'grid': '../vendor/grid',
-				'loading-queue': '../vendor/jquery.loading-queue.min'
+				'loading-queue': '../vendor/jquery.loading-queue.min',
+				'jqueryui': '../vendor/jquery-ui-1.10.1.draggable',
+				'mousewheel': '../vendor/jquery.mousewheel'
+				
 			},
 			shim: {
 				'loading-queue': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
+				'jqueryui': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
+				'mousewheel': {
 					deps: ['jquery'],
 			    	exports: '$'
 				},
