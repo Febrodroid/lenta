@@ -60,7 +60,7 @@
 
 .lenta .lenta-btn {
 	position: absolute;
-	display: block;
+	display: none;
 	text-transform: uppercase;
 	background: #cfcfcf;
 	top: 50%;
