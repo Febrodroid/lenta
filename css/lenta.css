@@ -33,6 +33,7 @@
 	transition: opacity .25s ease-in-out;
    	-moz-transition: opacity .25s ease-in-out;
    	-webkit-transition: opacity .25s ease-in-out;
+   	overflow: hidden;
 }
 
 .lenta .lenta-viewport > ul > li.focus {
@@ -48,9 +49,7 @@
 	filter: alpha(opacity = 0);
 }
 
-.lenta .lenta-viewport >  ul > li img {
-	width: auto;
-	height: 100%;
+.lenta .lenta-viewport > ul > li img {
 	display: block;
 	opacity: 1;
 	filter: alpha(opacity = 100);

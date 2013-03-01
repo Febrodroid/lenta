@@ -4,7 +4,7 @@ define([
     'lenta/slide',
     'lenta/scrollbar',
 	'lenta/mixins/data-options',
-	'draggable'
+	'jqueryui'
 
 ], function(Backbone, Slide, Scrollbar, DataOptionsMixin) {
 	

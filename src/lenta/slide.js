@@ -62,6 +62,10 @@ define([
 				width = this.options.maxWidth;
 			}
 			
+			this.$el.find('img').each(function() {
+				$(this).css({height: height, width: width})
+			})
+			
 			this.$el.css({
 				'height': height,
 				'width': width
