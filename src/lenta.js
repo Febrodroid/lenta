@@ -87,7 +87,10 @@ define([
 				this.nextBtn.show();
 			}
 			
-			if(e.toIndex - 1 < 0) {
+			var disabledSlidesCount =
+				this.slides.filter(function() { return this.$el.is('.disabled') }).length 
+
+			if(e.toIndex - 1 < disabledSlidesCount) {
 				this.prevBtn.hide();
 			} else {
 				this.prevBtn.show();
@@ -132,7 +135,7 @@ define([
 				this.move(this.options.index + 1);
 		},
 			
-		move: function(index) {
+		move: function(index, dontMove) {
 		
 			var self = this;
 			
@@ -142,10 +145,17 @@ define([
 			var slide = this.slides[index];
 
 			if(slide) {
+				
+				if (slide.$el.is('.disabled')) return this.move(index + 1, true)
 
 				this.$el.addClass(this.options.onMovingCssClass);
 				
-				var changeTo = this.$el.width() / 2 - (slide.getOuterWidth() / 2 + slide.getPosition().left);
+				var activeSlide = this.findActiveSlide()
+				if (!activeSlide) activeSlide = this.slides[0]
+				
+				var changeTo = dontMove 
+					? this.$el.width() / 2 - (activeSlide.getOuterWidth() / 2 + activeSlide.getPosition().left)
+					: this.$el.width() / 2 - (slide.getOuterWidth() / 2 + slide.getPosition().left)
 
 				var min = 0;
 				var max = this.$el.width() - this.slider.width();
@@ -157,10 +167,11 @@ define([
 					to: slide,
 					toIndex: index
 				});
-							
+				
 				this.slider.animate({
 					'left': point
 				}, this.options.transitionSpeed, function() {
+					
 					self.options.index = index;
 					self.$el.removeClass(self.options.onMovingCssClass);
 					self.setFocus(slide);	
