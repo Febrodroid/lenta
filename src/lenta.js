@@ -4,7 +4,8 @@ define([
     'lenta/slide',
     'lenta/scrollbar',
 	'lenta/mixins/data-options',
-	'draggable'
+	'mousewheel'
+
 
 ], function(Backbone, Slide, Scrollbar, DataOptionsMixin) {
 	
@@ -27,6 +28,10 @@ define([
 			aspectRatio: null,
 			align: 'left',
 			verticalAlign: 'top'
+		},
+
+		events: {
+			'mousewheel': 'onMousewheel'
 		},
 		
 		initialize: function() {
@@ -60,6 +65,15 @@ define([
 					el: this.$(this.options.scrollbarSelector),
 					lenta: this
 				});
+			}
+		},
+
+		onMousewheel: function(event, delta, deltaX, deltaY) {
+
+			if(deltaY > 0) {
+				this.prev();
+			} else {
+				this.next();
 			}
 		},
 		
@@ -269,19 +283,23 @@ define([
 		},
 		
 		render: function() {
+			
+			var self = this;
 
 			this.$el.css({
 				'position': 'relative',
 				'max-height': this.options.height
 			});
 		
-			this.slides = this.$(this.options.slidesSelector)
-				.map(function(i, element) {
+			this.slides = [];
+
+			this.$(this.options.slidesSelector)
+				.each(function(i, element) {
 					
-					return (new Slide({
+					self.slides.push((new Slide({
 						el: $(element)
 					}))
-					.render();
+					.render());
 
 				});
 			

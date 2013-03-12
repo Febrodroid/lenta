@@ -2,8 +2,8 @@ define([
 	
     'backbone',
     'lenta/mixins/data-options',
-    'mousewheel'
-    
+    'draggable'
+	
 ], function(Backbone, DataOptionsMixin) {
 	
 	var Scrollbar = Backbone.View.extend({
@@ -43,9 +43,6 @@ define([
 			    drag: this.changeContainerPosition,
 			    stop: this.toCenterSlide
 			});
-
-			this.lenta.$el.mousewheel(this.onMousewheel);
-
 		},
 
 		activateAllSlides: function() {
@@ -78,15 +75,6 @@ define([
 			return center.slide;
 		},
 
-		onMousewheel: function(event, delta, deltaX, deltaY) {
-
-			if(deltaY > 0) {
-				this.lenta.next();
-			} else {
-				this.lenta.prev();
-			}
-		},
-
 		changePosition: function(e) {
 
 			var left = 
@@ -114,7 +102,9 @@ define([
 			var slide = null;
 
 			if(left == 0) {
-				slide = this.lenta.slides.first();
+				slide = _.first(this.lenta.slides);
+			} else if (this.track.width() == left + this.handler.width()) {
+				slide = _.last(this.lenta.slides);
 			} else {
 				slide = this.findCenterSlide();
 			}			
