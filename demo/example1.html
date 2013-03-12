@@ -92,6 +92,14 @@
 				'mousewheel': '../vendor/jquery.mousewheel'
 			},
 			shim: {
+				'mousewheel': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
+				'draggable': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
 				'loading-queue': {
 					deps: ['jquery'],
 			    	exports: '$'

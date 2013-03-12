@@ -4,6 +4,7 @@ define([
     'lenta/slide',
     'lenta/scrollbar',
 	'lenta/mixins/data-options',
+	'mousewheel',
 	'jqueryui'
 
 ], function(Backbone, Slide, Scrollbar, DataOptionsMixin) {
@@ -27,6 +28,10 @@ define([
 			aspectRatio: null,
 			align: 'left',
 			verticalAlign: 'top'
+		},
+
+		events: {
+			'mousewheel': 'onMousewheel'
 		},
 		
 		initialize: function() {
@@ -62,6 +67,15 @@ define([
 				});
 			}
 		},
+
+		onMousewheel: function(event, delta, deltaX, deltaY) {
+
+			if(deltaY > 0) {
+				this.prev();
+			} else {
+				this.next();
+			}
+		},
 		
 		onWindowResize: function() {
 			
@@ -88,7 +102,9 @@ define([
 			}
 			
 			var disabledSlidesCount =
-				this.slides.filter(function() { return this.$el.is('.disabled') }).length 
+				_.filter(this.slides, function(slide) { 
+					return slide.$el.is('.disabled');
+				}).length; 
 
 			if(e.toIndex - 1 < disabledSlidesCount) {
 				this.prevBtn.hide();
@@ -280,19 +296,23 @@ define([
 		},
 		
 		render: function() {
+			
+			var self = this;
 
 			this.$el.css({
 				'position': 'relative',
 				'max-height': this.options.height
 			});
 		
-			this.slides = this.$(this.options.slidesSelector)
-				.map(function(i, element) {
+			this.slides = [];
+
+			this.$(this.options.slidesSelector)
+				.each(function(i, element) {
 					
-					return (new Slide({
+					self.slides.push((new Slide({
 						el: $(element)
 					}))
-					.render();
+					.render());
 
 				});
 			
