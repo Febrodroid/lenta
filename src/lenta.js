@@ -162,16 +162,15 @@ define([
 
 			if(slide) {
 				
-				if (slide.$el.is('.disabled')) return this.move(index + 1, true)
-
+				if(slide.$el.is('.disabled')) {
+					return this.move(index + 1, true);
+				}
+				
 				this.$el.addClass(this.options.onMovingCssClass);
 				
-				var activeSlide = this.findActiveSlide()
-				if (!activeSlide) activeSlide = this.slides[0]
-				
 				var changeTo = dontMove 
-					? this.$el.width() / 2 - (activeSlide.getOuterWidth() / 2 + activeSlide.getPosition().left)
-					: this.$el.width() / 2 - (slide.getOuterWidth() / 2 + slide.getPosition().left)
+					? this.$el.width() / 2 - (this.slides[0].getOuterWidth() / 2 + this.slides[0].getPosition().left)
+					: this.$el.width() / 2 - (slide.getOuterWidth() / 2 + slide.getPosition().left);
 
 				var min = 0;
 				var max = this.$el.width() - this.slider.width();
