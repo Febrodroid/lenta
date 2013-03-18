@@ -175,10 +175,12 @@ define([
 				var min = 0;
 				var max = this.$el.width() - this.slider.width();
 				var point = Math.max(Math.min(min, changeTo),  max > 0? 0: max);
-
+			
+				var activeSlide = this.findActiveSlide();
+					
 				this.trigger('moving', {
 					point: point,
-					from: this.findActiveSlide(),
+					from: activeSlide,
 					to: slide,
 					toIndex: index
 				});
@@ -190,7 +192,10 @@ define([
 					self.options.index = index;
 					self.$el.removeClass(self.options.onMovingCssClass);
 					self.setFocus(slide);	
-					self.trigger('moved');
+					self.trigger('moved', {
+						from: activeSlide,
+						to: slide,
+					});
 				});
 			}
 		},
