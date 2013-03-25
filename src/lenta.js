@@ -27,7 +27,8 @@ define([
 			onFocusCssClass: 'focus',
 			aspectRatio: null,
 			align: 'left',
-			verticalAlign: 'top'
+			verticalAlign: 'top',
+			mousewheelTracking: true
 		},
 
 		events: {
@@ -69,11 +70,14 @@ define([
 		},
 
 		onMousewheel: function(event, delta, deltaX, deltaY) {
-
-			if(deltaY > 0) {
-				this.prev();
-			} else {
-				this.next();
+			
+			if(this.options.mousewheelTracking) {
+			
+				if(deltaY > 0) {
+					this.prev();
+				} else {
+					this.next();
+				}
 			}
 		},
 		
@@ -231,9 +235,13 @@ define([
 			slide.$el.addClass(this.options.onFocusCssClass);
 		},
 		
-		resize: function() {
+		calculateSize: function() {
 			
-			var self = this;
+			if(_.isFunction(this.options.calculateSize)) {
+				return this.options.calculateSize.apply(this);
+			}				
+			
+			var size = null;
 			
 			if(this.options.aspectRatio) {
 				
@@ -246,9 +254,26 @@ define([
 				if(height > this.options.height)
 					height = this.options.height;
 				
+				size = {
+					width: height * this.options.aspectRatio,
+					height: height
+				};
+			}
+
+			return size;
+		},
+		
+		resize: function() {
+			
+			var self = this;
+			
+			var size = this.calculateSize();
+			
+			if(size) {
+				
 				this.$el
-					.width(height * this.options.aspectRatio)
-					.height(height);
+					.width(size.width)
+					.height(size.height);
 			}
 			
 			var width = 0;
@@ -257,6 +282,8 @@ define([
 				
 				this
 					.resize(self.$el.height(), self.$el.width());
+				
+				self.trigger('slide-resized', this);
 				
 				width += this.getOuterWidth();
 			});
@@ -313,11 +340,15 @@ define([
 			this.$(this.options.slidesSelector)
 				.each(function(i, element) {
 					
-					self.slides.push((new Slide({
+					var slide = new Slide({
 						el: $(element)
-					}))
-					.render());
-
+					});
+					
+					self.trigger('slide-created', slide);
+					
+					slide.render();
+					
+					self.slides.push(slide);			
 				});
 			
 			this.resize().move(this.options.index);

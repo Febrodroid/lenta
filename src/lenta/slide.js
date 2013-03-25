@@ -14,7 +14,7 @@ define([
 		},
 		
 		initialize: function() {
-			this.parseOptions();			
+			this.parseOptions();	
 		},
 
 		isNearTo: function() {
@@ -61,18 +61,14 @@ define([
 			if(this.options.maxWidth && this.options.maxWidth < width) {
 				width = this.options.maxWidth;
 			}
-			
-			this.$el.find('img').each(function() {
-				$(this).css({height: height, width: width})
-			})
-			
+						
 			this.$el.css({
 				'height': height,
 				'width': width
 			});
 			
 			return this;
-		},
+		}		
 	});
 	
 	_.extend(Slide.prototype, DataOptionsMixin);
