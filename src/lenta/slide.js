@@ -52,6 +52,8 @@ define([
 				
 		resize: function(height) {
 			
+			this.trigger('resize:before');
+			
 			var offset = this.getOffset();
 			
 			height = height - offset.y;
@@ -67,8 +69,17 @@ define([
 				'width': width
 			});
 			
+			this.trigger('resize:after');
+			
 			return this;
-		}		
+		},
+		
+		render: function() {
+			
+			this.trigger('render:before');
+			
+			return this;
+		}
 	});
 	
 	_.extend(Slide.prototype, DataOptionsMixin);

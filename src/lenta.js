@@ -36,16 +36,29 @@ define([
 		},
 		
 		initialize: function() {
+
+			var self = this;
 			
 			_.bindAll(this);
 							
 			this.parseOptions();
 			
+			this.slides = [];
 			this.scrollbar = null;
 			this.slider = this.$(this.options.sliderSelector);
 			this.prevBtn = this.$(this.options.prevBtnSelector);
 			this.nextBtn = this.$(this.options.nextBtnSelector);
 			this.viewport = this.$(this.options.viewportSelector);
+			
+			this.$(this.options.slidesSelector)
+				.each(function(i, element) {
+					
+					var slide = new Slide({
+						el: $(element)
+					});
+					
+					self.slides.push(slide);			
+				});
 			
 			this.nextBtn
 				.on('click', this.next);
@@ -282,9 +295,7 @@ define([
 				
 				this
 					.resize(self.$el.height(), self.$el.width());
-				
-				self.trigger('slide-resized', this);
-				
+								
 				width += this.getOuterWidth();
 			});
 			
@@ -328,28 +339,12 @@ define([
 		
 		render: function() {
 			
-			var self = this;
-
 			this.$el.css({
 				'position': 'relative',
 				'max-height': this.options.height
 			});
-		
-			this.slides = [];
-
-			this.$(this.options.slidesSelector)
-				.each(function(i, element) {
-					
-					var slide = new Slide({
-						el: $(element)
-					});
-					
-					self.trigger('slide-created', slide);
-					
-					slide.render();
-					
-					self.slides.push(slide);			
-				});
+			
+			_.invoke(this.slides, 'render');
 			
 			this.resize().move(this.options.index);
 			
