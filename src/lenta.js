@@ -28,7 +28,8 @@ define([
 			aspectRatio: null,
 			align: 'left',
 			verticalAlign: 'top',
-			mousewheelTracking: true
+			mousewheelTracking: true,
+			animatedResizing: true
 		},
 
 		events: {
@@ -100,14 +101,21 @@ define([
 			
 			this.resize();
 			
-			if(this.timerMoveOnResize) {
-				clearTimeout(this.timerMoveOnResize);
-				this.timerMoveOnResize = null;
+			if(this.options.animatedResizing) {
+				
+				if(this.timerMoveOnResize) {
+					clearTimeout(this.timerMoveOnResize);
+					this.timerMoveOnResize = null;
+				}
+				
+				this.timerMoveOnResize = setTimeout(function() {
+					self.move(self.options.index);
+				}, 300);
+				
+			} else {
+				
+				self.move(self.options.index, false, false);
 			}
-			
-			this.timerMoveOnResize = setTimeout(function() {
-				self.move(self.options.index);
-			}, 300);
 		},
 		
 		initControls: function(e) {
@@ -168,9 +176,12 @@ define([
 				this.move(this.options.index + 1);
 		},
 			
-		move: function(index, dontMove) {
+		move: function(index, dontMove, animation) {
 		
 			var self = this;
+			
+			if(typeof(animation) == "undefined")
+				animation = true;
 			
 			if(this.$el.hasClass(this.options.onMovingCssClass))
 				return false;
@@ -202,9 +213,7 @@ define([
 					toIndex: index
 				});
 				
-				this.slider.animate({
-					'left': point
-				}, this.options.transitionSpeed, function() {
+				var compelete = function() {
 					
 					self.options.index = index;
 					self.$el.removeClass(self.options.onMovingCssClass);
@@ -213,7 +222,19 @@ define([
 						from: activeSlide,
 						to: slide,
 					});
-				});
+				};
+				
+				if(animation) {
+					
+					this.slider.animate({
+						'left': point
+					}, this.options.transitionSpeed, compelete);
+					
+				} else {
+					
+					this.slider.css('left', point);
+					compelete();
+				}
 			}
 		},
 
