@@ -22,7 +22,7 @@ define([
 			prevBtnSelector: '.lenta-prev',
 			nextBtnSelector: '.lenta-next',
 			transitionSpeed: 'fast',
-			index: 0,
+			index: null,
 			onMovingCssClass: 'moving',
 			onFocusCssClass: 'focus',
 			aspectRatio: null,
@@ -38,8 +38,6 @@ define([
 		
 		initialize: function() {
 
-			var self = this;
-			
 			_.bindAll(this);
 							
 			this.parseOptions();
@@ -51,22 +49,14 @@ define([
 			this.nextBtn = this.$(this.options.nextBtnSelector);
 			this.viewport = this.$(this.options.viewportSelector);
 			
-			this.$(this.options.slidesSelector)
-				.each(function(i, element) {
-					
-					var slide = new Slide({
-						el: $(element)
-					});
-					
-					self.slides.push(slide);			
-				});
+			this.createSlides();
 			
 			this.nextBtn
 				.on('click', this.next);
 		
 			this.prevBtn
 				.on('click', this.prev);
-			
+					
 			this.$(this.options.slidesSelector)
 				.on('click', this.onSlideClick);
 
@@ -81,6 +71,33 @@ define([
 					lenta: this
 				});
 			}
+		},
+		
+		createSlides: function() {
+			
+			if(_.isFunction(this.options.createSlides)) {
+				return this.options.createSlides.apply(this);
+			}		
+			
+			return this.$(this.options.slidesSelector).each(this.addSlide);
+		},
+		
+		addSlide: function(i, element) {
+			
+			var slide = this.createSlide(element);
+			
+			this.slides.push(slide);
+			
+			return slide;			
+		},
+		
+		createSlide: function(element) {
+			
+			var slide = new Slide({
+				el: $(element)
+			});
+			
+			return slide;	
 		},
 
 		onMousewheel: function(event, delta, deltaX, deltaY) {
@@ -118,20 +135,21 @@ define([
 			}
 		},
 		
+		getSlidesCount: function() {
+			return _.filter(this.slides, function(slide) { 
+				return slide.$el.is('.disabled');
+			}).length; 
+		},
+		
 		initControls: function(e) {
 
-			if(e.toIndex + 1 >= this.slides.length) {
+			if(e.toIndex + 1 >= this.getSlidesCount()) {
 				this.nextBtn.hide();
 			} else {
 				this.nextBtn.show();
 			}
-			
-			var disabledSlidesCount =
-				_.filter(this.slides, function(slide) { 
-					return slide.$el.is('.disabled');
-				}).length; 
 
-			if(e.toIndex - 1 < disabledSlidesCount) {
+			if(e.toIndex - 1 < this.getSlidesCount()) {
 				this.prevBtn.hide();
 			} else {
 				this.prevBtn.show();
@@ -180,7 +198,7 @@ define([
 		
 			var self = this;
 			
-			if(typeof(animation) == "undefined")
+			if(typeof(animation) == 'undefined')
 				animation = true;
 			
 			if(this.$el.hasClass(this.options.onMovingCssClass))
@@ -220,8 +238,8 @@ define([
 					self.setFocus(slide);	
 					self.trigger('moved', {
 						from: activeSlide,
-						to: slide,
-					});
+						to: slide
+					});					
 				};
 				
 				if(animation) {
@@ -236,6 +254,10 @@ define([
 					compelete();
 				}
 			}
+		},
+		
+		getSliderPosition: function() {
+			return parseInt(this.slider.css('left'));	
 		},
 
 		findActiveSlide: function() {
@@ -359,6 +381,8 @@ define([
 		},
 		
 		render: function() {
+						
+			this.trigger('render:before');
 			
 			this.$el.css({
 				'position': 'relative',
@@ -367,7 +391,7 @@ define([
 			
 			_.invoke(this.slides, 'render');
 			
-			this.resize().move(this.options.index);
+			this.resize().move(this.options.index || 0);
 			
 			this.$el.removeClass('loading');
 
