@@ -5,7 +5,10 @@ define([
     'lenta/scrollbar',
 	'lenta/mixins/data-options',
 	'mousewheel',
-	'jqueryui'
+	'jqueryui',
+	'lenta/animations/fade',
+	'lenta/animations/none',
+	'lenta/animations/slide'
 
 ], function(Backbone, Slide, Scrollbar, DataOptionsMixin) {
 	
@@ -29,7 +32,8 @@ define([
 			align: 'left',
 			verticalAlign: 'top',
 			mousewheelTracking: true,
-			animatedResizing: true
+			animatedResizing: true,
+			transitionAnimation: 'slide' 
 		},
 
 		events: {
@@ -198,8 +202,8 @@ define([
 		
 			var self = this;
 			
-			if(typeof(animation) == 'undefined')
-				animation = true;
+			var transitionAnimation = 
+				animation === false? 'none': this.options.transitionAnimation;
 			
 			if(this.$el.hasClass(this.options.onMovingCssClass))
 				return false;
@@ -231,7 +235,7 @@ define([
 					toIndex: index
 				});
 				
-				var compelete = function() {
+				var complete = function() {
 					
 					self.options.index = index;
 					self.$el.removeClass(self.options.onMovingCssClass);
@@ -242,20 +246,16 @@ define([
 					});					
 				};
 				
-				if(animation) {
+				require(['lenta/animations/' + transitionAnimation], function(Animation) {
 					
-					this.slider.animate({
-						'left': point
-					}, this.options.transitionSpeed, compelete);
-					
-				} else {
-					
-					this.slider.css('left', point);
-					compelete();
-				}
+					(new Animation({
+						lenta: self,
+						point: point
+					})).animate().then(complete);					
+				});
 			}
 		},
-		
+				
 		getSliderPosition: function() {
 			return parseInt(this.slider.css('left'));	
 		},
@@ -319,18 +319,9 @@ define([
 			return size;
 		},
 		
-		resize: function() {
+		resizeSlides: function() {
 			
 			var self = this;
-			
-			var size = this.calculateSize();
-			
-			if(size) {
-				
-				this.$el
-					.width(size.width)
-					.height(size.height);
-			}
 			
 			var width = 0;
 			
@@ -342,6 +333,22 @@ define([
 				width += this.getOuterWidth();
 			});
 			
+			return width;
+		},
+		
+		resize: function() {
+						
+			var size = this.calculateSize();
+			
+			if(size) {
+				
+				this.$el
+					.width(size.width)
+					.height(size.height);
+			}
+			
+			var width = this.resizeSlides();
+						
 			this.slider.width(width);
 			
 			this.align();
@@ -390,8 +397,10 @@ define([
 			});
 			
 			_.invoke(this.slides, 'render');
-			
+						
 			this.resize().move(this.options.index || 0);
+			
+			this.trigger('render:after');
 			
 			this.$el.removeClass('loading');
 

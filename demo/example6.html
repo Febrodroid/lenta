@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+  <title>Demo</title>
+  <script src="../vendor/require.js"></script>
+    
+</head>
+<body>
+
+	<script type="text/json" id="table-data">
+	[{"content": 1}, {"content": 2}, {"content": 3}]
+	</script>
+	<script>
+
+		requirejs.config({
+			baseUrl: '../' + (document.location.hash == '#dist'? 'dist': 'src'),
+			paths: {
+				'backbone': '../vendor/backbone-min',
+				'underscore': '../vendor/underscore-min',
+				'jquery': '../vendor/jquery-1.9.0.min',
+									
+			},
+			shim: {
+				'mousewheel': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
+				'jqueryui': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
+				'loading-queue': {
+					deps: ['jquery'],
+			    	exports: '$'
+				},
+				'backbone': {
+					deps: ['jquery', 'underscore'],
+			    	exports: 'Backbone'
+				}
+			}
+		});
+	
+		require(['backbone'], function(Backbone){
+		
+			var Table = Backbone.View.extend({
+				
+				tagName: 'table',
+				
+				initialize: function(options) {
+					_.bindAll(this);	
+				},
+				
+				getJSONData: function() {
+					return $.parseJSON($.trim($(this.options.dataSelector).html()));
+				},
+				
+				render: function() {
+					
+					_.each(this.getJSONData(), function(item, key) {
+						console.log(item)
+					});
+					
+					return this;	
+				}
+			});
+			
+			var t = new Table({
+				dataSelector: '#table-data'
+			});
+			
+			
+			t.render();
+			
+			$('body').append(t.el);
+		});	
+	</script>
+</body>
+</html>

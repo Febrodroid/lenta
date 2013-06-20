@@ -13,27 +13,43 @@ define([
 			this
 				.on('moved', function(e) {
 					
-					if(this.slides.length / 3 * 2  == e.to.$el.index()) {
-						this.move(this.slides.length / 3, false, false);
-					}
+					if(this.getFakeSlides().length) {
 					
-					if(this.slides.length / 3 > e.to.$el.index()) {
-						this.move(this.slides.length / 3 * 2 -1 , false, false);
-					}				
+						if(this.slides.length / 3 * 2  == e.to.$el.index()) {
+							this.move(this.slides.length / 3, false, false);
+						}
+						
+						if(this.slides.length / 3 > e.to.$el.index()) {
+							this.move(this.slides.length / 3 * 2 - 1, false, false);
+						}						
+					}
 				})
 				.on('render:before', function() {
 					
-					if(_.isNull(this.options.index)) {
+					if(this.getFakeSlides().length && _.isNull(this.options.index)) {
+						
 						this.options.index = this.$(this.options.slidesSelector).length / 3;	
 					}
 				});			
 		},
 		
-		getSlidesCount: function() {
+		getFakeSlides: function() {
+			
+			return _.filter(this.slides, function(slide) { 
+				return slide.$el.data('fake');
+			});
+		},
+		
+		getOriginSlides: function() {
 			
 			return _.filter(this.slides, function(slide) { 
 				return !slide.$el.data('fake') && !slide.$el.is('.disabled');
-			}).length; 
+			});
+		},
+		
+		getSlidesCount: function() {
+			
+			return this.getOriginSlides().length; 
 		},
 		
 		initControls: function(e) {
@@ -47,35 +63,65 @@ define([
 			}
 		},
 		
+		getOriginSliderWidth: function() {
+			
+			var width = 0;
+			
+			_.invoke(this.getOriginSlides(), function() {
+				width += this.getOuterWidth();
+			});
+			
+			return width;
+		},
+		
 		getCurrentSlideIndex: function() {
 			return this.options.index % this.getSlidesCount();
 		},
 		
 		createSlides: function() {
-			
+
 			var self = this;
 			
 			var slides = this.$(this.options.slidesSelector);
 			
-			slides.each(function(i, element) {
-				
-				var appendClone = $(element)
-					.clone(true).data('fake', true);
-				
-				self.slider.append(appendClone);
-			});
+			slides.each(this.addSlide);
 			
-			slides.each(function(i, element) {
-				
-				var appendClone = $(element)
-					.clone(true).data('fake', true);
-				
-				self.slider.append(appendClone);
-			});
+			var viewportSize = this.calculateSize();
 			
-			this.$(this.options.slidesSelector).each(this.addSlide);
-			
+			viewportWidth = 
+				viewportSize? viewportSize.width: this.viewport.width();
+
+			var width = this.resizeSlides();			
 							
+			if(width > viewportWidth || this.options.forcedCycling) {
+				
+				var fakeSlides = new Array();
+				
+				slides.each(function(i, element) {
+					
+					var appendClone = $(element)
+						.clone(true).data('fake', true);
+					
+					self.slider.append(appendClone);
+					
+					fakeSlides.push(appendClone);
+					
+				});
+				
+				slides.each(function(i, element) {
+					
+					var appendClone = $(element)
+						.clone(true).data('fake', true);
+					
+					self.slider.append(appendClone);
+					
+					fakeSlides.push(appendClone);
+					
+				});
+				
+				$(fakeSlides).each(self.addSlide);			
+			}
+			
 		}
 	});
 	
