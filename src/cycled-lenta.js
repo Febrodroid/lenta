@@ -14,15 +14,10 @@ define([
 				.on('moved', function(e) {
 					
 					if(this.getFakeSlides().length) {
-					
-						if(this.slides.length / 3 * 2  == e.to.$el.index()) {
 						
-							this.move(this.slides.length / 3, false, false);
-						}
+						if(e.to.$el.index() < this.slides.length / 3 || e.to.$el.index() > this.slides.length / 3 * 2) {
 						
-						if(this.slides.length / 3 > e.to.$el.index()) {
-						
-							this.move(this.slides.length / 3 + e.to.$el.index(), false, false);
+							this.move(this.slides.length / 3 + this.getCurrentSlideIndex(), false, false);
 						}						
 					}
 				})
@@ -30,7 +25,7 @@ define([
 					
 					if(this.getFakeSlides().length) {
 						
-						this.options.index = this.slides.length / 3 + this.options.index;	
+						this.options.index = this.slides.length / 3 + this.getCurrentSlideIndex();	
 					}
 				});			
 		},
