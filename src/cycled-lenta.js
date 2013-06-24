@@ -9,26 +9,28 @@ define([
 		initialize: function(options){
 			
 			this.constructor.__super__.initialize.apply(this, [options])
-		
+			
 			this
 				.on('moved', function(e) {
 					
 					if(this.getFakeSlides().length) {
 					
 						if(this.slides.length / 3 * 2  == e.to.$el.index()) {
+						
 							this.move(this.slides.length / 3, false, false);
 						}
 						
 						if(this.slides.length / 3 > e.to.$el.index()) {
-							this.move(this.slides.length / 3 * 2 - 1, false, false);
+						
+							this.move(this.slides.length / 3 + e.to.$el.index(), false, false);
 						}						
 					}
 				})
 				.on('render:before', function() {
 					
-					if(this.getFakeSlides().length && _.isNull(this.options.index)) {
+					if(this.getFakeSlides().length) {
 						
-						this.options.index = this.$(this.options.slidesSelector).length / 3;	
+						this.options.index = this.slides.length / 3 + this.options.index;	
 					}
 				});			
 		},
