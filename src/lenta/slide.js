@@ -58,7 +58,7 @@ define([
 			
 			height = height - offset.y;
 			
-			var width = Math.floor(height * this.getAspectRatio());
+			var width = Math.ceil(height * this.getAspectRatio());
 			
 			if(this.options.maxWidth && this.options.maxWidth < width) {
 				width = this.options.maxWidth;
