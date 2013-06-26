@@ -77,6 +77,14 @@ define([
 			}
 		},
 		
+		unbind: function() {
+			
+			$(window).unbind('resize', this.onWindowResize);
+			this.undelegateEvents();
+			
+			return this;
+		},
+		
 		createSlides: function() {
 			
 			if(_.isFunction(this.options.createSlides)) {
